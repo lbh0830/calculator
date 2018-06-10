@@ -20,7 +20,7 @@ public class LabelContent {
 			
 		}
 		else {
-			if(lab.getText().equals("0"))
+			if(lab.getText().equals("0") && !src.equals("."))
 				lab.setText(src);
 			else
 				lab.setText(temp.concat(src));
