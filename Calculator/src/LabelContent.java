@@ -17,7 +17,7 @@ public class LabelContent {
 			lab.setText("0");
 		}
 		else if(src.equals("=")) {
-			
+			lab.setText(CalMath.calAns(CalMath.toPostfix(lab.getText()))); 		//¡°
 		}
 		else {
 			if(lab.getText().equals("0") && !src.equals("."))
