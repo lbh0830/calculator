@@ -1,6 +1,5 @@
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
@@ -12,6 +11,7 @@ public class CalMath {
 
 	static Queue<String> toPostfix(String infix) {
 		StringBuffer element = new StringBuffer();
+		boolean nextParentheses = false;
 		Stack<String> temp = new Stack<String>();
 		Queue<String> post = new LinkedList<String>();
 		for (char c : infix.toCharArray()) {
@@ -22,7 +22,9 @@ public class CalMath {
 			}
 			if (c == '(') {
 				temp.push(c+"");
+				nextParentheses = true;
 			} else if ("+¡Ñ¡Ò".indexOf(c) != -1) {
+				nextParentheses = false;
 				while (!temp.isEmpty() && priority(temp.peek()) >= priority(c+"")) {	
 					post.add(temp.pop());
 				}
@@ -32,12 +34,14 @@ public class CalMath {
 					post.add(temp.pop());
 				}
 				temp.pop();
-			} else if (c == '-' && (temp.isEmpty() || !temp.peek().equals("(")) && !post.isEmpty()){  //­}¼¯®Ú
+			} else if (c == '-' && !nextParentheses && !post.isEmpty()){  //­}¼¯®Ú
+				nextParentheses = false;
 				while (!temp.isEmpty() && priority(temp.peek()) >= priority(c+"")) {	
 					post.add(temp.pop());
 				}
 					temp.push(c+"");
 			}else {
+				nextParentheses = false;
 				element.append(c);
 			}
 		}
