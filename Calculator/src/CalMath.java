@@ -22,20 +22,22 @@ public class CalMath {
 			}
 			if (c == '(') {
 				temp.push(c+"");
-			} else if ("+-กักา".indexOf(c) != -1) {
-				while (!temp.isEmpty() && priority(temp.peek()) >= priority(c+"")) {
-					
+			} else if ("+กักา".indexOf(c) != -1) {
+				while (!temp.isEmpty() && priority(temp.peek()) >= priority(c+"")) {	
 					post.add(temp.pop());
 				}
-				//System.out.println(c);
-				temp.push(c+"");
-				//System.out.println(temp);
+					temp.push(c+"");
 			} else if (c == ')') {
 				while (!temp.peek().equals("(")) {
 					post.add(temp.pop());
 				}
 				temp.pop();
-			} else {
+			} else if (c == '-' && (temp.isEmpty() || !temp.peek().equals("(")) && !post.isEmpty()){  //ญ}ผฏฎฺ
+				while (!temp.isEmpty() && priority(temp.peek()) >= priority(c+"")) {	
+					post.add(temp.pop());
+				}
+					temp.push(c+"");
+			}else {
 				element.append(c);
 			}
 		}
@@ -51,37 +53,42 @@ public class CalMath {
 		Stack<String> calArray = new Stack<String>();
 		MathContext mc = new MathContext(17);
 		BigDecimal a,b;
-		for(String ele:post) {
-			if(isDigit(ele)) {
-				calArray.push(ele);
-			}
-			else {
-				b = new BigDecimal(calArray.pop());
-				//System.out.println("a="+a);
-				a = new BigDecimal(calArray.pop());
-				switch(ele) {
-					case "+":
-						calArray.push(a.add(b).toString());
-						break;
-					case "-":
-						calArray.push(a.subtract(b).toString());
-						break;
-					case "กั":
-						calArray.push(a.multiply(b).toString());
-						break;
-					case "กา":
-						calArray.push(a.divide(b,mc).toString());
-						break;
-					default:
-						break;
+		try {
+			for(String ele:post) {
+				if(isDigit(ele)) {
+					calArray.push(ele);
+				}
+				else {
+					b = new BigDecimal(calArray.pop());
+					//System.out.println("a="+a);
+					a = new BigDecimal(calArray.pop());
+					switch(ele) {
+						case "+":
+							calArray.push(a.add(b).toString());
+							break;
+						case "-":
+							calArray.push(a.subtract(b).toString());
+							break;
+						case "กั":
+							calArray.push(a.multiply(b).toString());
+							break;
+						case "กา":
+							calArray.push(a.divide(b,mc).toString());
+							break;
+						default:
+							break;
+					}
 				}
 			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return "Syntax Error!";
 		}
 		return calArray.pop();
 	}
 	
 	static boolean isDigit(String s) {
-		return s.charAt(0)<='9' && s.charAt(0)>='0' || s.charAt(0)=='.';
+		return s.charAt(s.length()-1)<='9' && s.charAt(s.length()-1)>='0' || s.charAt(0)=='.';
 	}
 
 }
