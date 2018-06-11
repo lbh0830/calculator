@@ -11,6 +11,7 @@ public class Calculator extends JFrame{
 		add(ui.showlbl,BorderLayout.NORTH);
 		add(ui,BorderLayout.CENTER);
 		setVisible(true);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	static public void main(String[] args) {
